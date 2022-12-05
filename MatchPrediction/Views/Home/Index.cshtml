@@ -4,4 +4,46 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    <table id="matches" class="display" style="width:100%">
+        <thead>
+            <th>League</th>
+            <th>Date</th>
+            <th>Home Team</th>
+            <th>Away Team</th>
+            <th>FullTime Home Goals</th>
+            <th>FullTime Away Goals</th>
+        </thead>
+        <tbody>
+            <tr>
+
+            </tr>
+        </tbody>
+    </table>
 </div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js" defer="defer"></script>
+<script type='text/javascript'>
+    $(document).ready(function () {
+        $('#matches').DataTable({
+            "proccessing": true,
+            "serverSide": true,
+            "ajax": {
+                url: "@Url.Action("GetMatches", "Home")",
+                type: 'POST'
+            },
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search..."
+            },
+            "columns": [
+                { "data": "div" },
+                { "data": "date"},
+                { "data": "homeTeam" },
+                { "data": "awayTeam" },
+                { "data": "fthg" },
+                { "data": "ftag" },
+            ]
+        });
+    });
+</script>
