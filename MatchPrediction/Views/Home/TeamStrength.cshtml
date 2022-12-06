@@ -18,12 +18,10 @@
 
     <br /><br />
 
-    <table id="teamstrengths" class="display" style="width:100%">
+    <table id="teamsgoalstats" class="display" style="width:100%">
         <thead>
             <th>Division</th>
             <th>Team</th>
-            <th>Home Strength</th>
-            <th>Away Strength</th>
             <th>AVG home Goals</th>
             <th>Weighted AVG Home Goals</th>
             <th>AVG away Goals</th>
@@ -35,6 +33,22 @@
         </thead>
         <tbody></tbody>
     </table>
+
+    <br /><br />
+
+    <table id="teamstrength" class="display" style="width:100%">
+        <thead>
+        <th>Division</th>
+        <th>Team</th>
+        <th>Home Strength</th>
+        <th>Away Strength</th>
+        <th>W Home Goals</th>
+        <th>W Away Goals</th>
+        <th>W Home Conceded Goals</th>
+        <th>W Away Conceded Goals</th>
+        </thead>
+        <tbody></tbody>
+    </table>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
@@ -43,7 +57,32 @@
 
 <script type='text/javascript'>
     $(document).ready(function () {
-        $('#teamstrengths').DataTable({
+        $('#teamsgoalstats').DataTable({
+            "proccessing": true,
+            "serverSide": true,
+            "ajax": {
+                url: "@Url.Action("GetTeamStregths", "Home")",
+                type: 'POST'
+            },
+            "language": {
+                "search": "",
+                "searchPlaceholder": "Search..."
+            },
+            "columns": [
+                { "data": "div" },
+                { "data": "team" },
+                { "data": "homeGoalsAvg" },
+                { "data": "homeGoalAvgWeighted" },
+                { "data": "awayGoalsAvg" },
+                { "data": "awayGoalAvgWeighted" },
+                { "data": "homeGoalsConceededAvg" },
+                { "data": "homeGoalsConceededAvgWeighted" },
+                { "data": "awayGoalsConceededAvg" },
+                { "data": "awayGoalsConceededAvgWeighted" },
+            ]
+        });
+
+        $('#teamstrength').DataTable({
             "proccessing": true,
             "serverSide": true,
             "ajax": {
@@ -59,13 +98,9 @@
                 { "data": "team" },
                 { "data": "homeStrenght" },
                 { "data": "awayStrength" },
-                { "data": "homeGoalsAvg" },
                 { "data": "homeGoalAvgWeighted" },
-                { "data": "awayGoalsAvg" },
                 { "data": "awayGoalAvgWeighted" },
-                { "data": "homeGoalsConceededAvg" },
                 { "data": "homeGoalsConceededAvgWeighted" },
-                { "data": "awayGoalsConceededAvg" },
                 { "data": "awayGoalsConceededAvgWeighted" },
             ]
         });

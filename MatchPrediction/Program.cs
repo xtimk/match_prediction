@@ -7,6 +7,7 @@ using MatchPrediction.Helpers.FileHelper;
 using MatchPrediction.Models.MatchPrediction;
 using MatchPrediction.Services.MatchStatsGetterService;
 using MatchPrediction.Services.MatchStatsGetterService.Impl;
+using MatchPrediction.Services.QueryService;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -18,6 +19,7 @@ builder.Host.UseSerilog((ctx, lc) =>
     lc.ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddScoped(typeof(ICsvHelper<>), typeof(CsvHelperLib<>));
+builder.Services.AddScoped<QueryService>();
 builder.Services.AddScoped(typeof(DataTablesService<>));
 builder.Services.AddScoped<IMatchStatsGetterService, FootballDataCoUkGetter>();
 builder.Services.AddTransient<DbInitializer>();
