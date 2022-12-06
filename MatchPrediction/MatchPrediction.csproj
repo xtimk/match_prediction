@@ -15,6 +15,7 @@
     <PackageReference Include="datatables.net-datetime" Version="1.1.2" />
     <PackageReference Include="datatables.net-responsive-bs5" Version="2.4.0" />
     <PackageReference Include="datatables.net-searchpanes-bs5" Version="2.1.0" />
+    <PackageReference Include="MathNet.Numerics.Signed" Version="5.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
       <PrivateAssets>all</PrivateAssets>

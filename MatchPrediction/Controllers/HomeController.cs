@@ -6,6 +6,8 @@ using MatchPrediction.Services.MatchStatsGetterService;
 using MatchPrediction.Services.QueryService;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using MathNet.Numerics.Distributions;
+using static System.Linq.Enumerable;
 
 namespace MatchPrediction.Controllers
 {
@@ -46,6 +48,39 @@ namespace MatchPrediction.Controllers
 
         public IActionResult TeamStrength()
         {
+            var home_team = _queryService.GetTeamStrength().Where(x => x.Team == "Napoli").First();
+            var hg = home_team.HomeGoalAvgWeighted;
+            var hgc = home_team.HomeGoalsConceededAvgWeighted;
+
+            var away_team = _queryService.GetTeamStrength().Where(x => x.Team == "Juventus").First();
+            var ag = away_team.AwayGoalAvgWeighted;
+            var agc = away_team.AwayGoalsConceededAvgWeighted;
+
+            var p1 = new Poisson(hg * agc);
+            var p2 = new Poisson(ag * hgc);
+
+            var matches = new Dictionary<string, double>();
+            double phome = 0;
+            double peven = 0;
+            double paway = 0;
+
+            foreach (var h in Range(0, 10))
+            {
+                foreach (var a in Range(0, 10))
+                {
+                    var p = p1.Probability(h) * p2.Probability(a);
+                    matches[h.ToString() + "-" + a.ToString()] = p;
+                    if (h > a) phome += p;
+                    if (h < a) paway += p;
+                    if (h == a) peven += p;
+                }
+            }
+
+            var ordered = matches.OrderByDescending(x => x.Value);
+
+            var sum = matches.Sum(x => x.Value);
+
+
             var q = _queryService.GetTeamStrength();
             return View();
         }

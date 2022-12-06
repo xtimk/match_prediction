@@ -3,8 +3,6 @@ using MatchPrediction.Data.Contexts;
 using MatchPrediction.Helpers.CsvHelper;
 using MatchPrediction.Helpers.CsvHelper.Impl;
 using MatchPrediction.Helpers.DataTables;
-using MatchPrediction.Helpers.FileHelper;
-using MatchPrediction.Models.MatchPrediction;
 using MatchPrediction.Services.MatchStatsGetterService;
 using MatchPrediction.Services.MatchStatsGetterService.Impl;
 using MatchPrediction.Services.QueryService;
