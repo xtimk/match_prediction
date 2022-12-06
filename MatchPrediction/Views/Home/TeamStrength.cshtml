@@ -1,20 +1,19 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
 }
-
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <table id="matches" class="display" style="width:100%">
+    <table id="teamstrengths" class="display" style="width:100%">
         <thead>
-            <th>League</th>
-            <th>Date</th>
-            <th>Home Team</th>
-            <th>Away Team</th>
-            <th>FullTime Home Goals</th>
-            <th>FullTime Away Goals</th>
+            <th>Team</th>
+            <th>Average goals when home</th>
+            <th>Average goals when away </th>
+            <th>Average goals conceeded when home </th>
+            <th>Average goals conceeded when away </th>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody></tbody>
     </table>
 </div>
 
@@ -24,11 +23,11 @@
 
 <script type='text/javascript'>
     $(document).ready(function () {
-        $('#matches').DataTable({
+        $('#teamstrengths').DataTable({
             "proccessing": true,
             "serverSide": true,
             "ajax": {
-                url: "@Url.Action("GetMatches", "Home")",
+                url: "@Url.Action("GetTeamStregths", "Home")",
                 type: 'POST'
             },
             "language": {
@@ -36,12 +35,11 @@
                 "searchPlaceholder": "Search..."
             },
             "columns": [
-                { "data": "div" },
-                { "data": "date"},
-                { "data": "homeTeam" },
-                { "data": "awayTeam" },
-                { "data": "fthg" },
-                { "data": "ftag" },
+                { "data": "team" },
+                { "data": "homeGoalsAvg" },
+                { "data": "awayGoalsAvg" },
+                { "data": "homeGoalsConceededAvg" },
+                { "data": "awayGoalsConceededAvg" },
             ]
         });
     });
