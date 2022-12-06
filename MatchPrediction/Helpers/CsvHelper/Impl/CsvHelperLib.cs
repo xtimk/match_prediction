@@ -13,7 +13,10 @@ namespace MatchPrediction.Helpers.CsvHelper.Impl
         public CsvHelperLib(ILogger<CsvHelperLib<T>> logger)
         {
             _logger = logger;
-            csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
+            csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                ShouldSkipRecord = record => record.Row.Parser.Record.All(field => string.IsNullOrWhiteSpace(field))
+            };
         }
 
         // Note that this returns IEnumerable.
