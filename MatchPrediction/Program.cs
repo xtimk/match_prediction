@@ -2,6 +2,7 @@ using MatchPrediction.Data;
 using MatchPrediction.Data.Contexts;
 using MatchPrediction.Helpers.CsvHelper;
 using MatchPrediction.Helpers.CsvHelper.Impl;
+using MatchPrediction.Helpers.DataTables;
 using MatchPrediction.Helpers.FileHelper;
 using MatchPrediction.Models.MatchPrediction;
 using MatchPrediction.Services.MatchStatsGetterService;
@@ -17,6 +18,7 @@ builder.Host.UseSerilog((ctx, lc) =>
     lc.ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddScoped(typeof(ICsvHelper<>), typeof(CsvHelperLib<>));
+builder.Services.AddScoped(typeof(DataTablesService<>));
 builder.Services.AddScoped<IMatchStatsGetterService, FootballDataCoUkGetter>();
 builder.Services.AddTransient<DbInitializer>();
 
