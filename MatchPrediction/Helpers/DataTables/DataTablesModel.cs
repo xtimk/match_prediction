@@ -11,6 +11,15 @@
         public List<Order> order { get; set; }
     }
 
+    public class DataTableAjaxResponseModel<T>
+    {
+        // properties are not capital due to json mapping
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+        public List<T> data { get; set; }
+    }
+
     public class Column
     {
         public string data { get; set; }
