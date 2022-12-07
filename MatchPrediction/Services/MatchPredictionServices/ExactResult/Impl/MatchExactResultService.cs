@@ -10,7 +10,7 @@ namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
     {
         private readonly ILogger<MatchExactResult> _logger;
         private readonly QueryService _queryService;
-        private int MAX_GOALS;
+        private readonly int MAX_GOALS;
 
         public MatchExactResultService(ILogger<MatchExactResult> logger, QueryService queryService)
         {
@@ -21,8 +21,10 @@ namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
 
         public async Task<Prediction_ExactResult_Response> PredictExactResult(string home_team_name, string away_team_name)
         {
-            var result = new Prediction_ExactResult_Response();
-            result.Success = true;
+            var result = new Prediction_ExactResult_Response
+            {
+                Success = true
+            };
 
             var home_team = await _queryService.GetTeamStrength().Where(x => x.Team == home_team_name).FirstOrDefaultAsync();
             var away_team = await _queryService.GetTeamStrength().Where(x => x.Team == away_team_name).FirstOrDefaultAsync();
@@ -47,21 +49,11 @@ namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
             result.AwayTeam_GoalScored_Average_Weighted = away_team.AwayGoalAvgWeighted;
             result.AwayTeam_GoalConceded_Average_Weighted = away_team.AwayGoalsConceededAvgWeighted;
 
-            //var hg = home_team.HomeGoalAvgWeighted;
-            //var hgc = home_team.HomeGoalsConceededAvgWeighted;
-            //var ag = away_team.AwayGoalAvgWeighted;
-            //var agc = away_team.AwayGoalsConceededAvgWeighted;
-
             result.Home_Lambda_Strength = result.HomeTeam_GoalScored_Average_Weighted * result.AwayTeam_GoalConceded_Average_Weighted;
             result.Away_Lambda_Strength = result.AwayTeam_GoalScored_Average_Weighted * result.HomeTeam_GoalConceded_Average_Weighted;
 
             var p1 = new Poisson(result.Home_Lambda_Strength);
             var p2 = new Poisson(result.Away_Lambda_Strength);
-
-            //var matches = new Dictionary<string, Tuple<double, double>>();
-            //double phome = 0;
-            //double peven = 0;
-            //double paway = 0;
 
             foreach (var h in Range(0, MAX_GOALS))
             {
@@ -75,9 +67,6 @@ namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
                         Probability= p,
                         Odd= 1/p
                     });
-                    //if (h > a) result.HomeWinsProbability += p;
-                    //if (h < a) result.AwayWinsProbability += p;
-                    //if (h == a) result.EvenProbability += p;
                 }
             }
 
