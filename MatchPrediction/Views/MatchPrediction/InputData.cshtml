@@ -40,6 +40,10 @@
     </div>*@
 
     <br />
+    <div class="form-control">
+        <h5>Dataset historical period</h5>
+        @Html.DropDownList("fromYear", ViewBag.YearsBack, "Select period...", new { @class = "form-select"})
+    </div>
     <input value="Predict!" type="submit"/>
 </form>
 

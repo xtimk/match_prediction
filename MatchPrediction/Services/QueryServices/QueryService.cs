@@ -12,9 +12,12 @@ namespace MatchPrediction.Services.QueryServices
             _db = db;
         }
 
-        public IQueryable<TeamStrengthQueryResult> GetTeamStrength()
+        public IQueryable<TeamStrengthQueryResult> GetTeamStrength(DateTime? from = null, DateTime? to = null)
         {
+            var dateFrom = from ?? DateTime.MinValue;
+            var dateTo = to ?? DateTime.MaxValue;
             var query = _db.Matches.AsQueryable();
+            query = query.Where(d => d.Date >= dateFrom && d.Date <= dateTo);
             var HomeGoalsAvg = query.GroupBy(x => x.HomeTeam).Select(x => new { Key = x.Key, HomeTeamGoalsAvg = x.Average(s => s.FTHG) });
             var AwayGoalsAvg = query.GroupBy(x => x.AwayTeam).Select(x => new { Key = x.Key, AwayTeamGoalsAvg = x.Average(s => s.FTAG) });
             var HomeGoalsConceededAvg = query.GroupBy(x => x.HomeTeam).Select(x => new { Key = x.Key, HomeTeamConceededGoalsAvg = x.Average(s => s.FTAG) });

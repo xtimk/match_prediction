@@ -19,15 +19,15 @@ namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
             MAX_GOALS= 10;
         }
 
-        public async Task<Prediction_ExactResult_Response> PredictExactResult(string home_team_name, string away_team_name)
+        public async Task<Prediction_ExactResult_Response> PredictExactResult(string home_team_name, string away_team_name, DateTime dataSetFrom, DateTime dataSetTo)
         {
             var result = new Prediction_ExactResult_Response
             {
                 Success = true
             };
 
-            var home_team = await _queryService.GetTeamStrength().Where(x => x.Team == home_team_name).FirstOrDefaultAsync();
-            var away_team = await _queryService.GetTeamStrength().Where(x => x.Team == away_team_name).FirstOrDefaultAsync();
+            var home_team = await _queryService.GetTeamStrength(dataSetFrom, dataSetTo).Where(x => x.Team == home_team_name).FirstOrDefaultAsync();
+            var away_team = await _queryService.GetTeamStrength(dataSetFrom, dataSetTo).Where(x => x.Team == away_team_name).FirstOrDefaultAsync();
             if (home_team == null || away_team == null)
             {
                 result.Success = false;
