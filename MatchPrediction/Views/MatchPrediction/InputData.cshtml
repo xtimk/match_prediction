@@ -3,6 +3,17 @@
 *@
 @{
 }
+<div class="text-center">
+    <h2 class="display-4">Match score prediction</h2>
+    <br />
+    <br />
+</div>
+
+<div class="text-center">
+    <h5>Just select home and away team and click "Predict!" button above.</h5>
+    <br />
+    <br />
+</div>
 <div>
     @if(ViewBag.Error != null)
     {
@@ -12,7 +23,7 @@
         }
     }
 </div>
-<form action="CalculatePrediction" method="post">
+<form action="CalculatePrediction" method="post" class="form-check">
     <div class="form-control">
         <h5>Home Team</h5>
         @Html.DropDownList("homeTeam", ViewBag.Teams, "Select home team...", new { @class = "form-select"})
@@ -29,7 +40,7 @@
     </div>*@
 
     <br />
-    <input value="Submit" type="submit"/>
+    <input value="Predict!" type="submit"/>
 </form>
 
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>

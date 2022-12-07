@@ -4,48 +4,37 @@
 @{
 }
 <div class="text-center">
-    <h1 class="display-4">Teams strenght</h1>
+    <h2 class="display-4">League & Team Statistics</h2>
+    <br /><br />
 
+    <h4>League Goals Statistics</h4>
+    <hr />
     <table id="divisionavg" class="display" style="width:100%">
         <thead>
-            <th>Division</th>
-            <th>Home Goal Average</th>
-            <th>Away Goal Average</th>
-            <th>Total Goal Average </th>
+            <tr>
+                <th>Division</th>
+                <th>Home Goal Average</th>
+                <th>Away Goal Average</th>
+                <th>Total Goal Average </th>
+            </tr>
         </thead>
         <tbody></tbody>
     </table>
 
     <br /><br />
-
-    <table id="teamsgoalstats" class="display" style="width:100%">
-        <thead>
-            <th>Division</th>
-            <th>Team</th>
-            <th>AVG home Goals</th>
-            <th>Weighted AVG Home Goals</th>
-            <th>AVG away Goals</th>
-            <th>Weighted AVG away Goals</th>
-            <th>AVG Home Conceeded Goals</th>
-            <th>Weighted AVG Home Conceeded Goals</th>
-            <th>AVG away Conceeded Goals</th>
-            <th>Weighted AVG away Conceeded Goals</th>
-        </thead>
-        <tbody></tbody>
-    </table>
-
-    <br /><br />
-
+    <h4>Team Goal Statistics</h4>
+    <h6>The Goals are all weighted based on the average goals scored/conceded in home/away.</h6>
+    <hr />
     <table id="teamstrength" class="display" style="width:100%">
         <thead>
-        <th>Division</th>
-        <th>Team</th>
-        <th>Home Strength</th>
-        <th>Away Strength</th>
-        <th>W Home Goals</th>
-        <th>W Away Goals</th>
-        <th>W Home Conceded Goals</th>
-        <th>W Away Conceded Goals</th>
+            <tr>
+                <th>Division</th>
+                <th>Team</th>
+                <th>Home Goals (Weighted)</th>
+                <th>Home Conceded Goals (Weighted)</th>
+                <th>Away Goals (Weighted)</th>
+                <th>Away Conceded Goals (Weighted)</th>
+            </tr>
         </thead>
         <tbody></tbody>
     </table>
@@ -57,30 +46,30 @@
 
 <script type='text/javascript'>
     $(document).ready(function () {
-        $('#teamsgoalstats').DataTable({
-            "proccessing": true,
-            "serverSide": true,
-            "ajax": {
-                url: "@Url.Action("GetTeamStregths", "Home")",
-                type: 'POST'
-            },
-            "language": {
-                "search": "",
-                "searchPlaceholder": "Search..."
-            },
-            "columns": [
-                { "data": "div" },
-                { "data": "team" },
-                { "data": "homeGoalsAvg" },
-                { "data": "homeGoalAvgWeighted" },
-                { "data": "awayGoalsAvg" },
-                { "data": "awayGoalAvgWeighted" },
-                { "data": "homeGoalsConceededAvg" },
-                { "data": "homeGoalsConceededAvgWeighted" },
-                { "data": "awayGoalsConceededAvg" },
-                { "data": "awayGoalsConceededAvgWeighted" },
-            ]
-        });
+        //$('#teamsgoalstats').DataTable({
+        //    "proccessing": true,
+        //    "serverSide": true,
+        //    "ajax": {
+        //        url: "@Url.Action("GetTeamStregths", "Home")",
+        //        type: 'POST'
+        //    },
+        //    "language": {
+        //        "search": "",
+        //        "searchPlaceholder": "Search..."
+        //    },
+        //    "columns": [
+        //        { "data": "div" },
+        //        { "data": "team" },
+        //        { "data": "homeGoalsAvg" },
+        //        { "data": "homeGoalAvgWeighted" },
+        //        { "data": "awayGoalsAvg" },
+        //        { "data": "awayGoalAvgWeighted" },
+        //        { "data": "homeGoalsConceededAvg" },
+        //        { "data": "homeGoalsConceededAvgWeighted" },
+        //        { "data": "awayGoalsConceededAvg" },
+        //        { "data": "awayGoalsConceededAvgWeighted" },
+        //    ]
+        //});
 
         $('#teamstrength').DataTable({
             "proccessing": true,
@@ -96,11 +85,9 @@
             "columns": [
                 { "data": "div" },
                 { "data": "team" },
-                { "data": "homeStrenght" },
-                { "data": "awayStrength" },
                 { "data": "homeGoalAvgWeighted" },
-                { "data": "awayGoalAvgWeighted" },
                 { "data": "homeGoalsConceededAvgWeighted" },
+                { "data": "awayGoalAvgWeighted" },
                 { "data": "awayGoalsConceededAvgWeighted" },
             ]
         });

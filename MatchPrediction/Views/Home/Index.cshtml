@@ -3,46 +3,7 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <table id="matches" class="display" style="width:100%">
-        <thead>
-            <th>League</th>
-            <th>Date</th>
-            <th>Home Team</th>
-            <th>Away Team</th>
-            <th>FullTime Home Goals</th>
-            <th>FullTime Away Goals</th>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <h1 class="display-4">Welcome to match prediction system</h1>
+    <br /><br />
+    You can check team statistics or directly predict a match using the links in the upper bar
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js" defer="defer"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
-
-<script type='text/javascript'>
-    $(document).ready(function () {
-        $('#matches').DataTable({
-            "proccessing": true,
-            "serverSide": true,
-            "ajax": {
-                url: "@Url.Action("GetMatches", "Home")",
-                type: 'POST'
-            },
-            "language": {
-                "search": "",
-                "searchPlaceholder": "Search..."
-            },
-            "columns": [
-                { "data": "div" },
-                { "data": "date"},
-                { "data": "homeTeam" },
-                { "data": "awayTeam" },
-                { "data": "fthg" },
-                { "data": "ftag" },
-            ]
-        });
-    });
-</script>
