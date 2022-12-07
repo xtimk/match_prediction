@@ -147,5 +147,13 @@ namespace MatchPrediction.Services.QueryService
                     });
             return queryDatatables;
         }
+
+        public IQueryable<string> GetAllTeams()
+        {
+            var homeTeams = _db.Matches.Select(x => x.HomeTeam);
+            var awayTeams = _db.Matches.Select(x => x.AwayTeam);
+            var teams = homeTeams.Union(awayTeams).Distinct();
+            return teams;
+        }
     }
 }

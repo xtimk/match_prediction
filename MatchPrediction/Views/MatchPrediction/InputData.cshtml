@@ -1,0 +1,61 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div>
+    @if(ViewBag.Error != null)
+    {
+        @foreach (var err in ViewBag.Error)
+        {
+            <h6 style="color:red">@err</h6>
+        }
+    }
+</div>
+<form action="CalculatePrediction" method="post">
+    <div class="form-control">
+        <h5>Home Team</h5>
+        @Html.DropDownList("homeTeam", ViewBag.Teams, "Select home team...", new { @class = "form-select"})
+    </div>
+    <br />
+    <div class="form-control">
+        <h5>Away Team</h5>
+        @Html.DropDownList("awayTeam", ViewBag.Teams, "Select away team...", new { @class = "form-select"})
+    </div>
+    <br />
+@*    <div class="form-control">
+        <h5>PredictionType</h5>
+        @Html.DropDownList("predictionType", ViewBag.PredictionType, "Select prediction type...", new { @class = "form-select"})
+    </div>*@
+
+    <br />
+    <input value="Submit" type="submit"/>
+</form>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js" defer="defer"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+
+<script type="text/javascript">
+    //$("#calc").click(function() {
+    //    var home = $("#homeTeam option:selected").text();
+    //    var away = $("#awayTeam option:selected").text();
+    //    var predtype = $("#predictionType option:selected").text();
+        
+    //    var data = {}
+    //    data["homeTeam"] = home;
+    //    data["awayTeam"] = away;
+    //    data["predType"] = predtype;
+
+    //    jsonData = JSON.stringify(data);
+
+    //    $.ajax({
+    //        type: 'GET',
+    //        url: 'CalculatePrediction',
+    //        data: jsonData,
+    //        success: function(data) { alert('ok')},
+    //        contentType: "application/json",
+    //        dataType: 'json'
+    //    })
+    //})
+</script>
