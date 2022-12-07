@@ -3,9 +3,11 @@ using MatchPrediction.Data.Contexts;
 using MatchPrediction.Helpers.CsvHelper;
 using MatchPrediction.Helpers.CsvHelper.Impl;
 using MatchPrediction.Helpers.DataTables;
+using MatchPrediction.Services.MatchPredictionServices.ExactResult;
+using MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl;
 using MatchPrediction.Services.MatchStatsGetterService;
 using MatchPrediction.Services.MatchStatsGetterService.Impl;
-using MatchPrediction.Services.QueryService;
+using MatchPrediction.Services.QueryServices;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -21,6 +23,7 @@ builder.Services.AddScoped<QueryService>();
 builder.Services.AddScoped(typeof(DataTablesService<>));
 builder.Services.AddScoped<IMatchStatsGetterService, FootballDataCoUkGetter>();
 builder.Services.AddTransient<DbInitializer>();
+builder.Services.AddScoped<IMatchExactResultService, MatchExactResultService>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<MatchPredictionContext>(opt =>

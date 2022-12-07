@@ -2,8 +2,8 @@
 {
     public class TeamStrengthQueryResult
     {
-        public string Div { get; set; }
-        public string Team { get; set; }
+        public string Div { get; set; } = default!;
+        public string Team { get; set; } = default!;
         public double HomeStrenght { get; set; }
         public double AwayStrength { get; set; }
         public double HomeGoalsAvg { get; set; }

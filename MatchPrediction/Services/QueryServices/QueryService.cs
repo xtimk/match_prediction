@@ -1,7 +1,7 @@
 ﻿using MatchPrediction.Data.Contexts;
 using MatchPrediction.Models;
 
-namespace MatchPrediction.Services.QueryService
+namespace MatchPrediction.Services.QueryServices
 {
     public class QueryService
     {

@@ -3,11 +3,11 @@ using MatchPrediction.Helpers.DataTables;
 using MatchPrediction.Models;
 using MatchPrediction.Models.MatchPrediction;
 using MatchPrediction.Services.MatchStatsGetterService;
-using MatchPrediction.Services.QueryService;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using MathNet.Numerics.Distributions;
 using static System.Linq.Enumerable;
+using MatchPrediction.Services.QueryServices;
 
 namespace MatchPrediction.Controllers
 {

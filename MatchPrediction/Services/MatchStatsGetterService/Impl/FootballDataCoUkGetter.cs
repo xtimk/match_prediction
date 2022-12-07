@@ -3,7 +3,6 @@ using MatchPrediction.Helpers.CsvHelper;
 using MatchPrediction.Models.MatchPrediction;
 using System.Globalization;
 using static System.Linq.Enumerable;
-using static System.Net.WebRequestMethods;
 
 namespace MatchPrediction.Services.MatchStatsGetterService.Impl
 {
@@ -40,9 +39,9 @@ namespace MatchPrediction.Services.MatchStatsGetterService.Impl
 
         public async Task<IEnumerable<Match>> GetMatchesStats()
         {
+            _logger.LogInformation("Getting matches stats from football-data.co.uk.");
             var http = _httpClientFactory.CreateClient();
             var matches = new List<Match>();
-
             foreach (var league in _leagues)
             {
                 foreach (var year in Range(_fromYear, (_toYear - _fromYear)))
@@ -63,32 +62,31 @@ namespace MatchPrediction.Services.MatchStatsGetterService.Impl
             return matches;
         }
     }
-}
-
-public sealed class MatchDto
-{
-    public string Div { get; set; }
-    public string Date { get; set; }
-
-    [Optional]
-    public string Time { get; set; }
-    public string HomeTeam { get; set; }
-    public string AwayTeam { get; set; }
-    public int FTHG { get; set; }
-    public int FTAG { get; set; }
-
-    public Match ToMatch()
+    public sealed class MatchDto
     {
-        string[] formats = { "dd/MM/yyyy", "dd/MM/yy", "dd/MM/yyyy HH:mm", "dd/MM/yy HH:mm" };
-        var match = new Match()
+        public string Div { get; set; } = default!;
+        public string Date { get; set; } = default!;
+
+        [Optional]
+        public string Time { get; set; } = default!;
+        public string HomeTeam { get; set; } = default!;
+        public string AwayTeam { get; set; } = default!;
+        public int FTHG { get; set; }
+        public int FTAG { get; set; }
+
+        public Match ToMatch()
         {
-            Div = Div,
-            Date = Time == null ? DateTime.ParseExact(Date, formats, CultureInfo.InvariantCulture) : DateTime.ParseExact(Date + " " + Time, formats, CultureInfo.InvariantCulture),
-            HomeTeam = HomeTeam,
-            AwayTeam = AwayTeam,
-            FTHG = FTHG,
-            FTAG = FTAG
-        };
-        return match;
+            string[] formats = { "dd/MM/yyyy", "dd/MM/yy", "dd/MM/yyyy HH:mm", "dd/MM/yy HH:mm" };
+            var match = new Match()
+            {
+                Div = Div,
+                Date = Time == null ? DateTime.ParseExact(Date, formats, CultureInfo.InvariantCulture) : DateTime.ParseExact(Date + " " + Time, formats, CultureInfo.InvariantCulture),
+                HomeTeam = HomeTeam,
+                AwayTeam = AwayTeam,
+                FTHG = FTHG,
+                FTAG = FTAG
+            };
+            return match;
+        }
     }
 }

@@ -8,20 +8,26 @@ namespace MatchPrediction.Helpers.DataTables
 {
     public class DataTablesService<T>
     {
+#pragma warning disable IDE0052 // Rimuovi i membri privati non letti
         private readonly ILogger<T> _logger;
-        private readonly MatchPredictionContext _db;
-        
-        private IQueryable<T> SearchSingleString<T>(IQueryable<T> query, string value)
+#pragma warning restore IDE0052 // Rimuovi i membri privati non letti
+
+#pragma warning disable CS0693
+        private static IQueryable<T> SearchSingleString<T>(IQueryable<T> query, string value)
         {
-            List<Expression> expressions = new List<Expression>();
+            var expressions = new List<Expression>();
             ParameterExpression parameter = Expression.Parameter(typeof(T), "p");
+#pragma warning disable CS8600 // Conversione del valore letterale Null o di un possibile valore Null in un tipo che non ammette i valori Null.
             MethodInfo contains_method = typeof(string).GetMethod("Contains", new[] { typeof(string) });
+#pragma warning restore CS8600 // Conversione del valore letterale Null o di un possibile valore Null in un tipo che non ammette i valori Null.
 
             foreach (PropertyInfo prop in typeof(T).GetProperties().Where(x => x.PropertyType == typeof(string)))
             {
                 MemberExpression member_expression = Expression.PropertyOrField(parameter, prop.Name);
                 ConstantExpression value_expression = Expression.Constant(value, typeof(string));
+#pragma warning disable CS8604 // Possibile argomento di riferimento Null.
                 MethodCallExpression contains_expression = Expression.Call(member_expression, contains_method, value_expression);
+#pragma warning restore CS8604 // Possibile argomento di riferimento Null.
                 expressions.Add(contains_expression);
             }
 
@@ -40,12 +46,9 @@ namespace MatchPrediction.Helpers.DataTables
 
             return query.Where(expression);
         }
-        public DataTablesService(
-                ILogger<T> logger,
-                MatchPredictionContext db)
+        public DataTablesService(ILogger<T> logger)
         {
             _logger = logger;
-            _db = db;
         }
 
         public IQueryable<T> Paginate<T>(IQueryable<T> q, int start, int pageSize)

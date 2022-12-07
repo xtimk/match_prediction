@@ -1,7 +1,6 @@
 ﻿using CsvHelper.Configuration;
 using CsvHelper;
 using System.Globalization;
-using MatchPrediction.Helpers.FileHelper;
 
 namespace MatchPrediction.Helpers.CsvHelper.Impl
 {
@@ -13,10 +12,12 @@ namespace MatchPrediction.Helpers.CsvHelper.Impl
         public CsvHelperLib(ILogger<CsvHelperLib<T>> logger)
         {
             _logger = logger;
+#pragma warning disable CS8604 // Possibile argomento di riferimento Null.
             csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 ShouldSkipRecord = record => record.Row.Parser.Record.All(field => string.IsNullOrWhiteSpace(field))
             };
+#pragma warning restore CS8604 // Possibile argomento di riferimento Null.
         }
 
         // Note that this returns IEnumerable.
