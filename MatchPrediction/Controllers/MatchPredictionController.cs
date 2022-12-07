@@ -81,6 +81,35 @@ namespace MatchPrediction.Controllers
             };
             ViewBag.Lambdas = lambdas;
 
+            //var overGoals = new Dictionary<string, Tuple<double, double>>
+            //{
+            //    { "Over 0.5", new Tuple<double, double>(0, 0) },
+            //    { "Over 1.5", new Tuple<double, double>(0, 0) },
+            //    { "Over 2.5", new Tuple<double, double>(0, 0) },
+            //    { "Over 3.5", new Tuple<double, double>(0, 0) },
+            //    { "Over 4.5", new Tuple<double, double>(0, 0) },
+            //    { "Over 5.5", new Tuple<double, double>(0, 0) },
+            //    { "Over 6.5", new Tuple<double, double>(0, 0) },
+            //    { "Over 7.5", new Tuple<double, double>(0, 0) },
+            //};
+            //var underGoals = new Dictionary<string, Tuple<double, double>>
+            //{
+            //    { "Under 0.5", new Tuple<double, double>(0, 0) },
+            //    { "Under 1.5", new Tuple<double, double>(0, 0) },
+            //    { "Under 2.5", new Tuple<double, double>(0, 0) },
+            //    { "Under 3.5", new Tuple<double, double>(0, 0) },
+            //    { "Under 4.5", new Tuple<double, double>(0, 0) },
+            //    { "Under 5.5", new Tuple<double, double>(0, 0) },
+            //    { "Under 6.5", new Tuple<double, double>(0, 0) },
+            //    { "Under 7.5", new Tuple<double, double>(0, 0) },
+            //};
+            var bothTeamsToScore = new Dictionary<string, Tuple<double, double>>
+            {
+                { "Yes", new Tuple<double, double>(Math.Round(result.BothTeamsToScoreProbability, 2), Math.Round(result.BothTeamsToScoreOdd, 2)) },
+                { "No", new Tuple<double, double>(Math.Round(result.BothTeamsNotToScoreProbability, 2), Math.Round(result.BothTeamsNotToScoreOdd, 2)) },
+            };
+            ViewBag.BothTeamsToScore = bothTeamsToScore;
+
             return View("OutputData");
         }
     }

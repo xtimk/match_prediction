@@ -79,6 +79,50 @@
                 return 1 / EvenProbability;
             }
         }
+        public double BothTeamsToScoreProbability
+        {
+            get
+            {
+                double p = 0;
+                foreach (var matchresult in MatchResults)
+                {
+                    if (matchresult.AwayScored > 0 && matchresult.HomeScored > 0)
+                    {
+                        p += matchresult.Probability;
+                    }
+                }
+                return p;
+            }
+        }
+        public double BothTeamsNotToScoreProbability
+        {
+            get
+            {
+                double p = 0;
+                foreach (var matchresult in MatchResults)
+                {
+                    if (!(matchresult.AwayScored > 0 && matchresult.HomeScored > 0))
+                    {
+                        p += matchresult.Probability;
+                    }
+                }
+                return p;
+            }
+        }
+        public double BothTeamsToScoreOdd
+        {
+            get
+            {
+                return 1 / BothTeamsToScoreProbability;
+            }
+        }
+        public double BothTeamsNotToScoreOdd
+        {
+            get
+            {
+                return 1 / BothTeamsNotToScoreProbability;
+            }
+        }
     }
 
     public class MatchExactResult

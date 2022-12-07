@@ -32,6 +32,33 @@
 <br />
 
 <div class="text-center">
+    <h4>Both Teams To Score</h4>
+    <hr />
+    <table id="bothteamstoscore" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Probability</th>
+                <th>Fair Odd</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in ViewBag.BothTeamsToScore)
+            {
+                <tr>
+                    <td>@match.Key</td>
+                    <td>@match.Value.Item1</td>
+                    <td>@match.Value.Item2</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
+
+<div class="text-center">
     <h4>Teams strength vs each other</h4>
     <hr />
     <table id="lambdas" class="display" style="width:100%">
@@ -113,6 +140,20 @@
     });
 
     $(document).ready(function () {
+        $('#bothteamstoscore').DataTable({
+            "language": {
+                "decimal": ","
+            },
+            "order": [[ 1, 'desc' ]],
+            "columnDefs": [
+                {"type": " string"},
+                {"type": "num"},
+                {"type": "num"}
+            ]
+        });
+    });
+
+    $(document).ready(function () {
         $('#lambdas').DataTable({
             "language": {
                 "decimal": ","
@@ -124,4 +165,5 @@
             ]
         });
     });
+    
 </script>
