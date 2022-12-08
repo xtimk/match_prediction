@@ -1,0 +1,171 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    PredictionExactResultTesterResult result = ViewBag.Output;
+}
+
+
+<div class="text-center">
+    <h4>Match winning stats</h4>
+    <hr />
+    <table id="resultprob" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Winner</th>
+                <th>Probability</th>
+                <th>Fair Odd</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in ViewBag.ResultProbs)
+            {
+                <tr>
+                    <td>@match.Key</td>
+                    <td>@match.Value.Item1</td>
+                    <td>@match.Value.Item2</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
+
+<div class="text-center">
+    <h4>Both Teams To Score</h4>
+    <hr />
+    <table id="bothteamstoscore" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Probability</th>
+                <th>Fair Odd</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in ViewBag.BothTeamsToScore)
+            {
+                <tr>
+                    <td>@match.Key</td>
+                    <td>@match.Value.Item1</td>
+                    <td>@match.Value.Item2</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
+
+<div class="text-center">
+    <h4>Teams strength vs each other</h4>
+    <hr />
+    <table id="lambdas" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Lambda (Strength)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in ViewBag.Lambdas)
+            {
+                <tr>
+                    <td>@match.Key</td>
+                    <td>@match.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
+
+<div class="text-center">
+    <h4>Exact result probabilities</h4>
+    <hr />
+    <table id="matchesprob" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Score</th>
+                <th>Probability</th>
+                <th>Fair Odd</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in ViewBag.Matches)
+            {
+                <tr>
+                    <td>@match.Key</td>
+                    <td>@match.Value.Item1</td>
+                    <td>@match.Value.Item2</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js" defer="defer"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#matchesprob').DataTable({
+            "language": {
+                "decimal": ","
+            },
+            "order": [[ 1, 'desc' ]],
+            "columnDefs": [
+                {"type": " string"},
+                {"type": "num"},
+                { "type": "num" }
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#resultprob').DataTable({
+            "language": {
+                "decimal": ","
+            },
+            "order": [[ 1, 'desc' ]],
+            "columnDefs": [
+                {"type": " string"},
+                {"type": "num"},
+                {"type": "num"}
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#bothteamstoscore').DataTable({
+            "language": {
+                "decimal": ","
+            },
+            "order": [[ 1, 'desc' ]],
+            "columnDefs": [
+                {"type": " string"},
+                {"type": "num"},
+                {"type": "num"}
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#lambdas').DataTable({
+            "language": {
+                "decimal": ","
+            },
+            "order": [[ 1, 'desc' ]],
+            "columnDefs": [
+                {"type": " string"},
+                {"type": "num"}
+            ]
+        });
+    });
+    
+</script>

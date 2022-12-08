@@ -24,6 +24,7 @@ builder.Services.AddScoped(typeof(DataTablesService<>));
 builder.Services.AddScoped<IMatchStatsGetterService, FootballDataCoUkGetter>();
 builder.Services.AddTransient<DbInitializer>();
 builder.Services.AddScoped<IMatchExactResultService, MatchExactResultService>();
+builder.Services.AddScoped<IMatchExactResultTesterService, MatchExactResultTesterService>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<MatchPredictionContext>(opt =>

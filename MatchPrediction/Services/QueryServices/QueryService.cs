@@ -158,5 +158,29 @@ namespace MatchPrediction.Services.QueryServices
             var teams = homeTeams.Union(awayTeams).Distinct();
             return teams;
         }
+
+        public IQueryable<string> GetAllTeamsInDivision(string div)
+        {
+            var filteredMatches = _db.Matches.Where(x => x.Div == div);
+            var homeTeams = filteredMatches.Select(x => x.HomeTeam);
+            var awayTeams = filteredMatches.Select(x => x.AwayTeam);
+            var teams = homeTeams.Union(awayTeams).Distinct();
+            return teams;
+        }
+
+        public IQueryable<string> GetAllTeamsInDivisionInInterval(string div, DateTime from, DateTime to)
+        {
+            var filteredMatches = _db.Matches.Where(x => x.Div == div && x.Date >= from && x.Date <= to);
+            var homeTeams = filteredMatches.Select(x => x.HomeTeam);
+            var awayTeams = filteredMatches.Select(x => x.AwayTeam);
+            var teams = homeTeams.Union(awayTeams).Distinct();
+            return teams;
+        }
+
+        public IQueryable<string> GetAllDivisions()
+        {
+            var divs = _db.Matches.Select(x => x.Div).Distinct();
+            return divs;
+        }
     }
 }

@@ -23,7 +23,9 @@ namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
         {
             var result = new Prediction_ExactResult_Response
             {
-                Success = true
+                Success = true,
+                HomeTeamName = home_team_name,
+                AwayTeamName = away_team_name
             };
 
             var home_team = await _queryService.GetTeamStrength(dataSetFrom, dataSetTo).Where(x => x.Team == home_team_name).FirstOrDefaultAsync();
