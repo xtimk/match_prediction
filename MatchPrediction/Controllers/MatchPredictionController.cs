@@ -1,4 +1,5 @@
 ﻿using MatchPrediction.Data.Contexts;
+using MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers;
 using MatchPrediction.Services.MatchPredictionServices.ExactResult;
 using MatchPrediction.Services.QueryServices;
 using Microsoft.AspNetCore.Mvc;
@@ -13,18 +14,27 @@ namespace MatchPrediction.Controllers
         private readonly QueryService _queryService;
         private readonly IMatchExactResultService _matchExactResultService;
         private readonly MatchPredictionContext _db;
+        private readonly PredictionResponse_PoissonExactResult_TeamWinner _predictionResponse_PoissonExactResult_TeamWinner;
+        private readonly PredictionResponse_PoissonExactResult_BothTeamsToScore _predictionResponse_PoissonExactResult_BothTeamsToScore;
+        private readonly PredictionResponse_PoissonExactResult_ExactResult _predictionResponse_PoissonExactResult_ExactResult;
 
         public MatchPredictionController(
                 ILogger<MatchPredictionController> logger,
                 QueryService queryService,
                 IMatchExactResultService matchExactResultService,
-                MatchPredictionContext db
+                MatchPredictionContext db,
+                PredictionResponse_PoissonExactResult_TeamWinner predictionResponse_PoissonExactResult_TeamWinner,
+                PredictionResponse_PoissonExactResult_BothTeamsToScore predictionResponse_PoissonExactResult_BothTeamsToScore,
+                PredictionResponse_PoissonExactResult_ExactResult predictionResponse_PoissonExactResult_ExactResult
             )
         {
             _logger = logger;
             _queryService = queryService;
             _matchExactResultService = matchExactResultService;
             _db = db;
+            _predictionResponse_PoissonExactResult_TeamWinner = predictionResponse_PoissonExactResult_TeamWinner;
+            _predictionResponse_PoissonExactResult_BothTeamsToScore = predictionResponse_PoissonExactResult_BothTeamsToScore;
+            _predictionResponse_PoissonExactResult_ExactResult = predictionResponse_PoissonExactResult_ExactResult;
         }
         public async Task<IActionResult> InputData()
         {
@@ -93,27 +103,19 @@ namespace MatchPrediction.Controllers
 
             var result = await _matchExactResultService.PredictExactResult(home_team_name, away_team_name, dateFrom, dateTo);
 
-            if (!result.Success)
+            if (!result.ExecutedWithoutErrors)
             {
                 ViewBag.Error = result.Errors;
                 ViewBag.Teams = await GetAllTeamsSelectItemList();
                 return View("InputData");
             }
 
-            var matches = new Dictionary<string, Tuple<double, double>>();
-            foreach (var match in result.MatchResults)
-            {
-                matches[home_team_name + " " + match.HomeScored.ToString() + " - " + match.AwayScored.ToString() + " " + away_team_name] = 
-                    new Tuple<double, double>(Math.Round(match.Probability * 100, 2), Math.Round(match.Odd, 2));
-            }
+            var exactResultReader = _predictionResponse_PoissonExactResult_ExactResult.CreateReader(result);
+            var matches = _predictionResponse_PoissonExactResult_ExactResult.GetExactResultProbabilities();
             ViewBag.Matches = matches;
 
-            var resultProbs = new Dictionary<string, Tuple<double, double>>
-            {
-                { home_team_name + " (Home)", new Tuple<double, double>(Math.Round(result.HomeWinsProbability,2 ), Math.Round(result.HomeWinsOdd, 2)) },
-                { "Even", new Tuple<double, double>(Math.Round(result.EvenProbability, 2), Math.Round(result.EvenOdd, 2)) },
-                { away_team_name + " (Away)", new Tuple<double, double>(Math.Round(result.AwayWinsProbability, 2), Math.Round(result.AwayWinsOdd, 2)) }
-            };
+            var teamWinnerReader = _predictionResponse_PoissonExactResult_TeamWinner.CreateReader(result);
+            var resultProbs = teamWinnerReader.GetTeamWinnerProbabilities();
             ViewBag.ResultProbs = resultProbs;
 
             var lambdas = new Dictionary<string, double>
@@ -123,33 +125,8 @@ namespace MatchPrediction.Controllers
             };
             ViewBag.Lambdas = lambdas;
 
-            //var overGoals = new Dictionary<string, Tuple<double, double>>
-            //{
-            //    { "Over 0.5", new Tuple<double, double>(0, 0) },
-            //    { "Over 1.5", new Tuple<double, double>(0, 0) },
-            //    { "Over 2.5", new Tuple<double, double>(0, 0) },
-            //    { "Over 3.5", new Tuple<double, double>(0, 0) },
-            //    { "Over 4.5", new Tuple<double, double>(0, 0) },
-            //    { "Over 5.5", new Tuple<double, double>(0, 0) },
-            //    { "Over 6.5", new Tuple<double, double>(0, 0) },
-            //    { "Over 7.5", new Tuple<double, double>(0, 0) },
-            //};
-            //var underGoals = new Dictionary<string, Tuple<double, double>>
-            //{
-            //    { "Under 0.5", new Tuple<double, double>(0, 0) },
-            //    { "Under 1.5", new Tuple<double, double>(0, 0) },
-            //    { "Under 2.5", new Tuple<double, double>(0, 0) },
-            //    { "Under 3.5", new Tuple<double, double>(0, 0) },
-            //    { "Under 4.5", new Tuple<double, double>(0, 0) },
-            //    { "Under 5.5", new Tuple<double, double>(0, 0) },
-            //    { "Under 6.5", new Tuple<double, double>(0, 0) },
-            //    { "Under 7.5", new Tuple<double, double>(0, 0) },
-            //};
-            var bothTeamsToScore = new Dictionary<string, Tuple<double, double>>
-            {
-                { "Yes", new Tuple<double, double>(Math.Round(result.BothTeamsToScoreProbability, 2), Math.Round(result.BothTeamsToScoreOdd, 2)) },
-                { "No", new Tuple<double, double>(Math.Round(result.BothTeamsNotToScoreProbability, 2), Math.Round(result.BothTeamsNotToScoreOdd, 2)) },
-            };
+            var bothTeamsToScoreReader = _predictionResponse_PoissonExactResult_BothTeamsToScore.CreateReader(result);
+            var bothTeamsToScore = bothTeamsToScoreReader.GetBothTeamsToScoreProbabilities();
             ViewBag.BothTeamsToScore = bothTeamsToScore;
 
             return View("OutputData");

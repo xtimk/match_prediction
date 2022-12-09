@@ -17,12 +17,13 @@
         </thead>
         <tbody>
             @foreach (var match in ViewBag.ResultProbs)
-            {
+                {
                 <tr>
                     <td>@match.Key</td>
-                    <td>@match.Value.Item1</td>
-                    <td>@match.Value.Item2</td>
-                </tr>
+                    <td>@match.Value</td>
+                    <td>@match.Value</td>
+
+              </tr>
             }
         </tbody>
     </table>
@@ -47,8 +48,8 @@
             {
                 <tr>
                     <td>@match.Key</td>
-                    <td>@match.Value.Item1</td>
-                    <td>@match.Value.Item2</td>
+                    <td>@match.Value</td>
+                    <td>@match.Value</td>
                 </tr>
             }
         </tbody>
@@ -99,8 +100,8 @@
             {
                 <tr>
                     <td>@match.Key</td>
-                    <td>@match.Value.Item1</td>
-                    <td>@match.Value.Item2</td>
+                    <td>@match.Value</td>
+                    <td>@match.Value</td>
                 </tr>
             }
         </tbody>

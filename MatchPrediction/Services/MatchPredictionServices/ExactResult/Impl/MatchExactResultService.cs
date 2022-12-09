@@ -1,8 +1,9 @@
-﻿using MatchPrediction.Models.PredictionResults.ExactResult;
+﻿using MatchPrediction.Managers.PredictionManagers.PoissonExactResult;
 using MatchPrediction.Services.QueryServices;
 using MathNet.Numerics.Distributions;
 using Microsoft.EntityFrameworkCore;
 using static System.Linq.Enumerable;
+using static MatchPrediction.Managers.PredictionManagers.PoissonExactResult.PredictionResponse_PoissonExactResult;
 
 namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
 {
@@ -19,11 +20,11 @@ namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
             MAX_GOALS= 10;
         }
 
-        public async Task<Prediction_ExactResult_Response> PredictExactResult(string home_team_name, string away_team_name, DateTime dataSetFrom, DateTime dataSetTo)
+        public async Task<PredictionResponse_PoissonExactResult> PredictExactResult(string home_team_name, string away_team_name, DateTime dataSetFrom, DateTime dataSetTo)
         {
-            var result = new Prediction_ExactResult_Response
+            var result = new PredictionResponse_PoissonExactResult
             {
-                Success = true,
+                ExecutedWithoutErrors = true,
                 HomeTeamName = home_team_name,
                 AwayTeamName = away_team_name
             };
@@ -32,7 +33,7 @@ namespace MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl
             var away_team = await _queryService.GetTeamStrength(dataSetFrom, dataSetTo).Where(x => x.Team == away_team_name).FirstOrDefaultAsync();
             if (home_team == null || away_team == null)
             {
-                result.Success = false;
+                result.ExecutedWithoutErrors = false;
                 if (home_team == null)
                 {
                     _logger.LogError("Can't retrieve home team stats");

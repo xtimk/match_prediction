@@ -1,4 +1,5 @@
 ﻿using System;
+using MatchPrediction.Managers.PredictionManagers.PoissonExactResult;
 using MatchPrediction.Models.MatchPrediction;
 
 namespace MatchPrediction.Models.PredictionResults.ExactResult
@@ -55,21 +56,22 @@ namespace MatchPrediction.Models.PredictionResults.ExactResult
 		{
 			get
 			{
-				if (Prediction.HomeWinsProbability > Prediction.EvenProbability &&
-                    Prediction.HomeWinsProbability > Prediction.AwayWinsProbability)
-				{
-					return Match.HomeTeam;
-				}
-                if (Prediction.AwayWinsProbability > Prediction.EvenProbability &&
-					Prediction.AwayWinsProbability > Prediction.HomeWinsProbability)
-                {
-                    return Match.AwayTeam;
-                }
+				throw new NotImplementedException();
+				//if (Prediction.HomeWinsProbability > Prediction.EvenProbability &&
+    //                Prediction.HomeWinsProbability > Prediction.AwayWinsProbability)
+				//{
+				//	return Match.HomeTeam;
+				//}
+    //            if (Prediction.AwayWinsProbability > Prediction.EvenProbability &&
+				//	Prediction.AwayWinsProbability > Prediction.HomeWinsProbability)
+    //            {
+    //                return Match.AwayTeam;
+    //            }
 				return "Even";
 
             }
         }
-		public Prediction_ExactResult_Response Prediction { get; set; }
+		public PredictionResponse_PoissonExactResult Prediction { get; set; }
 		public bool WinnerPredictedCorrectly {
 			get
 			{
@@ -96,14 +98,15 @@ namespace MatchPrediction.Models.PredictionResults.ExactResult
         {
             get
             {
-                if (Prediction.BothTeamsToScoreProbability >= Prediction.BothTeamsNotToScoreProbability)
-                {
-                    return "YES";
-                }
-				else
-				{
-					return "NO";
-				}
+                throw new NotImplementedException();
+                //            if (Prediction.BothTeamsToScoreProbability >= Prediction.BothTeamsNotToScoreProbability)
+                //            {
+                //                return "YES";
+                //            }
+                //else
+                //{
+                //	return "NO";
+                //}
             }
         }
         public bool BothTeamsToScorePredictedCorrectly

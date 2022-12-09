@@ -3,6 +3,8 @@ using MatchPrediction.Data.Contexts;
 using MatchPrediction.Helpers.CsvHelper;
 using MatchPrediction.Helpers.CsvHelper.Impl;
 using MatchPrediction.Helpers.DataTables;
+using MatchPrediction.Managers.PredictionManagers.PoissonExactResult;
+using MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers;
 using MatchPrediction.Services.MatchPredictionServices.ExactResult;
 using MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl;
 using MatchPrediction.Services.MatchStatsGetterService;
@@ -25,6 +27,11 @@ builder.Services.AddScoped<IMatchStatsGetterService, FootballDataCoUkGetter>();
 builder.Services.AddTransient<DbInitializer>();
 builder.Services.AddScoped<IMatchExactResultService, MatchExactResultService>();
 builder.Services.AddScoped<IMatchExactResultTesterService, MatchExactResultTesterService>();
+
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult>();
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult_TeamWinner>();
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult_BothTeamsToScore>();
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult_ExactResult>();
 
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<MatchPredictionContext>(opt =>
