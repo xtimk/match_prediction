@@ -116,11 +116,15 @@ namespace MatchPrediction.Controllers
 
             var exactResultReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_EXACTRESULT);
             var matches = exactResultReader.ExecuteReader(prediction);
-            ViewBag.Matches = matches;
+            ViewBag.Matches = CalculateOddsAndRound(matches);
 
             var teamWinnerReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_TEAMWINNER);
             var teamWinnerProbs = teamWinnerReader.ExecuteReader(prediction);
-            ViewBag.ResultProbs = teamWinnerProbs;
+            ViewBag.ResultProbs = CalculateOddsAndRound(teamWinnerProbs);
+
+            var bothTeamsToScoreReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_BOTHTEAMSTOSCORE);
+            var bothTeamsToScore = bothTeamsToScoreReader.ExecuteReader(prediction);
+            ViewBag.BothTeamsToScore = CalculateOddsAndRound(bothTeamsToScore);
 
             var lambdas = new Dictionary<string, double>
             {
@@ -129,11 +133,18 @@ namespace MatchPrediction.Controllers
             };
             ViewBag.Lambdas = lambdas;
 
-            var bothTeamsToScoreReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_BOTHTEAMSTOSCORE);
-            var bothTeamsToScore = bothTeamsToScoreReader.ExecuteReader(prediction);
-            ViewBag.BothTeamsToScore = bothTeamsToScore;
-
             return View("OutputData");
+        }
+
+        private Dictionary<string, Tuple<double, double>> CalculateOddsAndRound(Dictionary<string, double> d)
+        {
+            var result = new Dictionary<string, Tuple<double, double>>();
+            foreach (var item in d)
+            {
+                result.Add(item.Key, new Tuple<double, double>(Math.Round(item.Value, 2), Math.Round(1 / item.Value, 2)));
+            }
+
+            return result;
         }
     }
 }
