@@ -1,4 +1,5 @@
 ﻿using MatchPrediction.Data.Contexts;
+using MatchPrediction.Managers.PredictionManagers.PoissonExactResult;
 using MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers;
 using MatchPrediction.Services.MatchPredictionServices.ExactResult;
 using MatchPrediction.Services.QueryServices;
@@ -17,6 +18,7 @@ namespace MatchPrediction.Controllers
         private readonly PredictionResponse_PoissonExactResult_TeamWinner _predictionResponse_PoissonExactResult_TeamWinner;
         private readonly PredictionResponse_PoissonExactResult_BothTeamsToScore _predictionResponse_PoissonExactResult_BothTeamsToScore;
         private readonly PredictionResponse_PoissonExactResult_ExactResult _predictionResponse_PoissonExactResult_ExactResult;
+        private readonly PredictionResponseReaderManager _predictionResponseReaderManager;
 
         public MatchPredictionController(
                 ILogger<MatchPredictionController> logger,
@@ -25,7 +27,8 @@ namespace MatchPrediction.Controllers
                 MatchPredictionContext db,
                 PredictionResponse_PoissonExactResult_TeamWinner predictionResponse_PoissonExactResult_TeamWinner,
                 PredictionResponse_PoissonExactResult_BothTeamsToScore predictionResponse_PoissonExactResult_BothTeamsToScore,
-                PredictionResponse_PoissonExactResult_ExactResult predictionResponse_PoissonExactResult_ExactResult
+                PredictionResponse_PoissonExactResult_ExactResult predictionResponse_PoissonExactResult_ExactResult,
+                PredictionResponseReaderManager predictionResponseReaderManager
             )
         {
             _logger = logger;
@@ -35,6 +38,7 @@ namespace MatchPrediction.Controllers
             _predictionResponse_PoissonExactResult_TeamWinner = predictionResponse_PoissonExactResult_TeamWinner;
             _predictionResponse_PoissonExactResult_BothTeamsToScore = predictionResponse_PoissonExactResult_BothTeamsToScore;
             _predictionResponse_PoissonExactResult_ExactResult = predictionResponse_PoissonExactResult_ExactResult;
+            _predictionResponseReaderManager = predictionResponseReaderManager;
         }
         public async Task<IActionResult> InputData()
         {
@@ -101,32 +105,32 @@ namespace MatchPrediction.Controllers
             var lastYear = _db.Matches.Max(x => x.Date).Date.Year;
             var dateTo = new DateTime(lastYear, 12, 31, 23, 59, 59);
 
-            var result = await _matchExactResultService.PredictExactResult(home_team_name, away_team_name, dateFrom, dateTo);
+            var prediction = await _matchExactResultService.PredictExactResult(home_team_name, away_team_name, dateFrom, dateTo);
 
-            if (!result.ExecutedWithoutErrors)
+            if (!prediction.ExecutedWithoutErrors)
             {
-                ViewBag.Error = result.Errors;
+                ViewBag.Error = prediction.Errors;
                 ViewBag.Teams = await GetAllTeamsSelectItemList();
                 return View("InputData");
             }
 
-            var exactResultReader = _predictionResponse_PoissonExactResult_ExactResult.CreateReader(result);
-            var matches = _predictionResponse_PoissonExactResult_ExactResult.GetExactResultProbabilities();
+            var exactResultReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_EXACTRESULT);
+            var matches = exactResultReader.ExecuteReader(prediction);
             ViewBag.Matches = matches;
 
-            var teamWinnerReader = _predictionResponse_PoissonExactResult_TeamWinner.CreateReader(result);
-            var resultProbs = teamWinnerReader.GetTeamWinnerProbabilities();
-            ViewBag.ResultProbs = resultProbs;
+            var teamWinnerReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_TEAMWINNER);
+            var teamWinnerProbs = teamWinnerReader.ExecuteReader(prediction);
+            ViewBag.ResultProbs = teamWinnerProbs;
 
             var lambdas = new Dictionary<string, double>
             {
-                { home_team_name + " (Home)", Math.Round(result.Home_Lambda_Strength, 4) },
-                { away_team_name + " (Away)", Math.Round(result.Away_Lambda_Strength, 4) }
+                { home_team_name + " (Home)", Math.Round(prediction.Home_Lambda_Strength, 4) },
+                { away_team_name + " (Away)", Math.Round(prediction.Away_Lambda_Strength, 4) }
             };
             ViewBag.Lambdas = lambdas;
 
-            var bothTeamsToScoreReader = _predictionResponse_PoissonExactResult_BothTeamsToScore.CreateReader(result);
-            var bothTeamsToScore = bothTeamsToScoreReader.GetBothTeamsToScoreProbabilities();
+            var bothTeamsToScoreReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_BOTHTEAMSTOSCORE);
+            var bothTeamsToScore = bothTeamsToScoreReader.ExecuteReader(prediction);
             ViewBag.BothTeamsToScore = bothTeamsToScore;
 
             return View("OutputData");

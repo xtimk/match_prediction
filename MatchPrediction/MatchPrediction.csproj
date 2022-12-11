@@ -43,6 +43,7 @@
     <None Remove="Managers\PredictionManagers\" />
     <None Remove="Managers\PredictionManagers\PoissonExactResult\" />
     <None Remove="Managers\PredictionManagers\PoissonExactResult\Readers\" />
+    <None Remove="Constants\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\MatchPredictionTester\" />
@@ -50,5 +51,6 @@
     <Folder Include="Managers\PredictionManagers\" />
     <Folder Include="Managers\PredictionManagers\PoissonExactResult\" />
     <Folder Include="Managers\PredictionManagers\PoissonExactResult\Readers\" />
+    <Folder Include="Constants\" />
   </ItemGroup>
 </Project>

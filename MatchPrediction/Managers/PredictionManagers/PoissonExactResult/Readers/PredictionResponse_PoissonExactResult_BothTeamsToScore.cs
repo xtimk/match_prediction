@@ -1,10 +1,9 @@
 ﻿using System;
 namespace MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers
 {
-	public class PredictionResponse_PoissonExactResult_BothTeamsToScore
+	public class PredictionResponse_PoissonExactResult_BothTeamsToScore : PredictionResponseReader
 	{
         private readonly ILogger<PredictionResponse_PoissonExactResult_BothTeamsToScore> _logger;
-        private PredictionResponse_PoissonExactResult _prediction;
 
         public PredictionResponse_PoissonExactResult_BothTeamsToScore(
                 ILogger<PredictionResponse_PoissonExactResult_BothTeamsToScore> logger)
@@ -12,13 +11,7 @@ namespace MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers
             _logger = logger;
         }
 
-        public PredictionResponse_PoissonExactResult_BothTeamsToScore CreateReader(PredictionResponse_PoissonExactResult prediction)
-        {
-            _prediction = prediction;
-            return this;
-        }
-
-        public Dictionary<string, double> GetBothTeamsToScoreProbabilities()
+        public override Dictionary<string, double> ExecuteReader(PredictionResponse_PoissonExactResult prediction)
         {
             var result = new Dictionary<string, double>()
             {
@@ -26,7 +19,7 @@ namespace MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers
                 { "No", 0 },
             };
 
-            foreach (var m in _prediction.MatchResults)
+            foreach (var m in prediction.MatchResults)
             {
                 if (m.HomeScored > 0 && m.AwayScored > 0)
                     result["Yes"] += m.Probability;

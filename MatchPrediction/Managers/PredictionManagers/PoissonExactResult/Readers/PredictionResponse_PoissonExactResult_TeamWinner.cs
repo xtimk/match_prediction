@@ -1,28 +1,20 @@
 ﻿using System;
 namespace MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers
 {
-	public class PredictionResponse_PoissonExactResult_TeamWinner
-	{
+	public class PredictionResponse_PoissonExactResult_TeamWinner : PredictionResponseReader
+    {
         private readonly ILogger<PredictionResponse_PoissonExactResult_TeamWinner> _logger;
-        private PredictionResponse_PoissonExactResult _prediction;
 
         public PredictionResponse_PoissonExactResult_TeamWinner(
-                PredictionResponse_PoissonExactResult prediction,
                 ILogger<PredictionResponse_PoissonExactResult_TeamWinner> logger)
 		{
             _logger = logger;
         }
 
-        public PredictionResponse_PoissonExactResult_TeamWinner CreateReader(PredictionResponse_PoissonExactResult prediction)
+        public override Dictionary<string, double> ExecuteReader(PredictionResponse_PoissonExactResult prediction)
         {
-            _prediction = prediction;
-            return this;
-        }
-
-        public Dictionary<string, double> GetTeamWinnerProbabilities()
-        {
-            var home_key = _prediction.HomeTeamName + " (Home)";
-            var away_key = _prediction.AwayTeamName + " (Away)";
+            var home_key = prediction.HomeTeamName + " (Home)";
+            var away_key = prediction.AwayTeamName + " (Away)";
             var even_key = "Even";
 
             var result = new Dictionary<string, double>()
@@ -32,7 +24,7 @@ namespace MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers
                 { away_key, 0 },
             };
 
-            foreach (var m in _prediction.MatchResults)
+            foreach (var m in prediction.MatchResults)
             {
                 if (m.HomeScored > m.AwayScored)
                     result[home_key] += m.Probability;
@@ -49,6 +41,7 @@ namespace MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers
             }
             return result;
         }
+        
 	}
 }
 

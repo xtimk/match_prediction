@@ -67,7 +67,7 @@ namespace MatchPrediction.Models.PredictionResults.ExactResult
     //            {
     //                return Match.AwayTeam;
     //            }
-				return "Even";
+				//return "Even";
 
             }
         }
