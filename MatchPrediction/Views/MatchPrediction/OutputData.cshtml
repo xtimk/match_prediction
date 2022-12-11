@@ -5,6 +5,31 @@
 }
 
 <div class="text-center">
+    <h4>Team strengths</h4>
+    <hr />
+    <table id="lambdas" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th>Lambda (Strength)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in ViewBag.Lambdas)
+            {
+                <tr>
+                    <td>@match.Key</td>
+                    <td>@match.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
+
+<div class="text-center">
     <h4>Match winning stats</h4>
     <hr />
     <table id="teamwinner" class="display" style="width:100%">
@@ -59,30 +84,6 @@
 <br />
 <br />
 
-<div class="text-center">
-    <h4>Teams strength vs each other</h4>
-    <hr />
-    <table id="lambdas" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Team</th>
-                <th>Lambda (Strength)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var match in ViewBag.Lambdas)
-            {
-                <tr>
-                    <td>@match.Key</td>
-                    <td>@match.Value</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<br />
-<br />
 <div class="text-center">
     <h4>Over X Goals</h4>
     <hr />
