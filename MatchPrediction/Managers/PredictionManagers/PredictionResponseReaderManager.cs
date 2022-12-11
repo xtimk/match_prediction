@@ -29,6 +29,12 @@ namespace MatchPrediction.Managers.PredictionManagers.PoissonExactResult
                 case var value when value == ReaderConstants.READER_POISSON_EXACT_RESULT_EXACTRESULT:
                     reader = _serviceProvider.GetRequiredService<PredictionResponse_PoissonExactResult_ExactResult>();
                     break;
+                case var value when value == ReaderConstants.READER_POISSON_EXACT_RESULT_OVERGOALS:
+                    reader = _serviceProvider.GetRequiredService<PredictionResponse_PoissonExactResult_OverXGoals>();
+                    break;
+                case var value when value == ReaderConstants.READER_POISSON_EXACT_RESULT_UNDERGOALS:
+                    reader = _serviceProvider.GetRequiredService<PredictionResponse_PoissonExactResult_UnderXGoals>();
+                    break;
                 default:
                     throw new NotImplementedException();
             }

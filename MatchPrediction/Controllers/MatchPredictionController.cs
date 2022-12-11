@@ -126,6 +126,14 @@ namespace MatchPrediction.Controllers
             var bothTeamsToScore = bothTeamsToScoreReader.ExecuteReader(prediction);
             ViewBag.BothTeamsToScore = CalculateOddsAndRound(bothTeamsToScore);
 
+            var overXGoalsReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_OVERGOALS);
+            var overXGoalsStats = overXGoalsReader.ExecuteReader(prediction);
+            ViewBag.OverXGoals = CalculateOddsAndRound(overXGoalsStats);
+
+            var underXGoalsReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_UNDERGOALS);
+            var underXGoalsStats = underXGoalsReader.ExecuteReader(prediction);
+            ViewBag.UnderXGoals = CalculateOddsAndRound(underXGoalsStats);
+
             var lambdas = new Dictionary<string, double>
             {
                 { home_team_name + " (Home)", Math.Round(prediction.Home_Lambda_Strength, 4) },

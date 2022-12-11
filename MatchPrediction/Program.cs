@@ -37,6 +37,8 @@ builder.Services.AddScoped<IMatchExactResultService, MatchExactResultService>();
 builder.Services.AddScoped<PredictionResponse_PoissonExactResult_TeamWinner>();
 builder.Services.AddScoped<PredictionResponse_PoissonExactResult_BothTeamsToScore>();
 builder.Services.AddScoped<PredictionResponse_PoissonExactResult_ExactResult>();
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult_OverXGoals>();
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult_UnderXGoals>();
 
 // Manager
 builder.Services.AddScoped<PredictionResponseReaderManager>();

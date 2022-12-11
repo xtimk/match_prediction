@@ -17,13 +17,13 @@
         </thead>
         <tbody>
             @foreach (var match in ViewBag.ResultProbs)
-                {
+            {
                 <tr>
                     <td>@match.Key</td>
                     <td>@match.Value.Item1</td>
                     <td>@match.Value.Item2</td>
 
-              </tr>
+                </tr>
             }
         </tbody>
     </table>
@@ -83,6 +83,58 @@
 
 <br />
 <br />
+<div class="text-center">
+    <h4>Over X Goals</h4>
+    <hr />
+    <table id="overxgoals" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Probability</th>
+                <th>Fair Odd</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in ViewBag.OverXGoals)
+            {
+                <tr>
+                    <td>@match.Key</td>
+                    <td>@match.Value.Item1</td>
+                    <td>@match.Value.Item2</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
+<div class="text-center">
+    <h4>Undex X Goals</h4>
+    <hr />
+    <table id="underxgoals" class="display" style="width:100%">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Probability</th>
+                <th>Fair Odd</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var match in ViewBag.UnderXGoals)
+            {
+                <tr>
+                    <td>@match.Key</td>
+                    <td>@match.Value.Item1</td>
+                    <td>@match.Value.Item2</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+<br />
 
 <div class="text-center">
     <h4>Exact result probabilities</h4>
@@ -111,16 +163,15 @@
 <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js" defer="defer"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
-<script type="text/javascript">
-    $(document).ready(function () {
+<script type="text/javascript">$(document).ready(function () {
         $('#matchesprob').DataTable({
             "language": {
-                "decimal": ","
-            },
-            "order": [[ 1, 'desc' ]],
+                "decimal": ","
+            },
+            "order": [[1, 'desc']],
             "columnDefs": [
-                {"type": " string"},
-                {"type": "num"},
+                { "type": " string" },
+                { "type": "num" },
                 { "type": "num" }
             ]
         });
@@ -129,13 +180,13 @@
     $(document).ready(function () {
         $('#resultprob').DataTable({
             "language": {
-                "decimal": ","
-            },
-            "order": [[ 1, 'desc' ]],
+                "decimal": ","
+            },
+            "order": [[1, 'desc']],
             "columnDefs": [
-                {"type": " string"},
-                {"type": "num"},
-                {"type": "num"}
+                { "type": " string" },
+                { "type": "num" },
+                { "type": "num" }
             ]
         });
     });
@@ -143,13 +194,41 @@
     $(document).ready(function () {
         $('#bothteamstoscore').DataTable({
             "language": {
-                "decimal": ","
-            },
-            "order": [[ 1, 'desc' ]],
+                "decimal": ","
+            },
+            "order": [[1, 'desc']],
             "columnDefs": [
-                {"type": " string"},
-                {"type": "num"},
-                {"type": "num"}
+                { "type": " string" },
+                { "type": "num" },
+                { "type": "num" }
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#overxgoals').DataTable({
+            "language": {
+                "decimal": ","
+            },
+            "order": [[1, 'desc']],
+            "columnDefs": [
+                { "type": " string" },
+                { "type": "num" },
+                { "type": "num" }
+            ]
+        });
+    });
+
+    $(document).ready(function () {
+        $('#underxgoals').DataTable({
+            "language": {
+                "decimal": ","
+            },
+            "order": [[1, 'desc']],
+            "columnDefs": [
+                { "type": " string" },
+                { "type": "num" },
+                { "type": "num" }
             ]
         });
     });
@@ -157,14 +236,12 @@
     $(document).ready(function () {
         $('#lambdas').DataTable({
             "language": {
-                "decimal": ","
-            },
-            "order": [[ 1, 'desc' ]],
+                "decimal": ","
+            },
+            "order": [[1, 'desc']],
             "columnDefs": [
-                {"type": " string"},
-                {"type": "num"}
+                { "type": " string" },
+                { "type": "num" }
             ]
         });
-    });
-    
-</script>
+    });</script>
