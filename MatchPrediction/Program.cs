@@ -3,11 +3,14 @@ using MatchPrediction.Data.Contexts;
 using MatchPrediction.Helpers.CsvHelper;
 using MatchPrediction.Helpers.CsvHelper.Impl;
 using MatchPrediction.Helpers.DataTables;
+using MatchPrediction.Managers.PredictionManagers.PoissonExactResult;
+using MatchPrediction.Managers.PredictionManagers.PoissonExactResult.Readers;
 using MatchPrediction.Services.MatchPredictionServices.ExactResult;
 using MatchPrediction.Services.MatchPredictionServices.ExactResult.Impl;
 using MatchPrediction.Services.MatchStatsGetterService;
 using MatchPrediction.Services.MatchStatsGetterService.Impl;
 using MatchPrediction.Services.QueryServices;
+using MathNet.Numerics;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -18,14 +21,31 @@ builder.Services.AddControllersWithViews();
 builder.Host.UseSerilog((ctx, lc) =>
     lc.ReadFrom.Configuration(ctx.Configuration));
 
+// Utilities
 builder.Services.AddScoped(typeof(ICsvHelper<>), typeof(CsvHelperLib<>));
 builder.Services.AddScoped<QueryService>();
 builder.Services.AddScoped(typeof(DataTablesService<>));
+
+// Db Initializer services
 builder.Services.AddScoped<IMatchStatsGetterService, FootballDataCoUkGetter>();
 builder.Services.AddTransient<DbInitializer>();
+
+// Predictions
 builder.Services.AddScoped<IMatchExactResultService, MatchExactResultService>();
+
+// Readers
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult_TeamWinner>();
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult_BothTeamsToScore>();
+builder.Services.AddScoped<PredictionResponse_PoissonExactResult_ExactResult>();
+
+// Manager
+builder.Services.AddScoped<PredictionResponseReaderManager>();
+
+
+// Prediction testers
 builder.Services.AddScoped<IMatchExactResultTesterService, MatchExactResultTesterService>();
 
+builder.Services.AddSingleton<IServiceProvider>(sp => sp);
 builder.Services.AddHttpClient();
 builder.Services.AddDbContext<MatchPredictionContext>(opt =>
 {
@@ -34,7 +54,9 @@ builder.Services.AddDbContext<MatchPredictionContext>(opt =>
 
 var app = builder.Build();
 
+// Eventually auto-apply migrations
 await MigrateDatabase(app);
+// Seed database if empty
 await SeedDatabase(app);
 
 // Configure the HTTP request pipeline.
@@ -69,7 +91,7 @@ async static Task MigrateDatabase(WebApplication app)
     }
     catch (Exception ex)
     {
-        logger.LogError(ex, "An error has been encountered when migrating data.");
+        logger.LogError(ex, "An error has been encountered when applying migration(s).");
     }
     finally
     {
