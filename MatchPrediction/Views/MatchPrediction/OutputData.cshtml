@@ -7,7 +7,7 @@
 <div class="text-center">
     <h4>Match winning stats</h4>
     <hr />
-    <table id="resultprob" class="display" style="width:100%">
+    <table id="teamwinner" class="display" style="width:100%">
         <thead>
             <tr>
                 <th>Winner</th>
@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var match in ViewBag.ResultProbs)
+            @foreach (var match in ViewBag.TeamWinner)
             {
                 <tr>
                     <td>@match.Key</td>
@@ -139,7 +139,7 @@
 <div class="text-center">
     <h4>Exact result probabilities</h4>
     <hr />
-    <table id="matchesprob" class="display" style="width:100%">
+    <table id="exactresult" class="display" style="width:100%">
         <thead>
             <tr>
                 <th>Score</th>
@@ -148,7 +148,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var match in ViewBag.Matches)
+            @foreach (var match in ViewBag.ExactResult)
             {
                 <tr>
                     <td>@match.Key</td>
@@ -164,7 +164,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.js" defer="defer"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
 <script type="text/javascript">$(document).ready(function () {
-        $('#matchesprob').DataTable({
+        $('#exactresult').DataTable({
             "language": {
                 "decimal": ","
             },
@@ -178,7 +178,7 @@
     });
 
     $(document).ready(function () {
-        $('#resultprob').DataTable({
+        $('#teamwinner').DataTable({
             "language": {
                 "decimal": ","
             },

@@ -115,12 +115,12 @@ namespace MatchPrediction.Controllers
             }
 
             var exactResultReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_EXACTRESULT);
-            var matches = exactResultReader.ExecuteReader(prediction);
-            ViewBag.Matches = CalculateOddsAndRound(matches);
+            var exactResultStats = exactResultReader.ExecuteReader(prediction);
+            ViewBag.ExactResult = CalculateOddsAndRound(exactResultStats);
 
             var teamWinnerReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_TEAMWINNER);
-            var teamWinnerProbs = teamWinnerReader.ExecuteReader(prediction);
-            ViewBag.ResultProbs = CalculateOddsAndRound(teamWinnerProbs);
+            var teamWinnerStats = teamWinnerReader.ExecuteReader(prediction);
+            ViewBag.TeamWinner = CalculateOddsAndRound(teamWinnerStats);
 
             var bothTeamsToScoreReader = _predictionResponseReaderManager.CreateReader(Constants.ReaderConstants.READER_POISSON_EXACT_RESULT_BOTHTEAMSTOSCORE);
             var bothTeamsToScore = bothTeamsToScoreReader.ExecuteReader(prediction);
